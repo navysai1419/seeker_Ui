@@ -1,0 +1,160 @@
+@import "../home/home.component.scss";
+
+// .card {
+//     margin-top: 3;
+//     padding: 1.5em 0.5em 0.5em;
+//     border-radius: 1em;
+//     text-align: center;
+//     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+//   }
+//   .card img {
+//     width: 65%;
+//     border-radius: 100%;
+//     margin: 0 auto;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+//   }
+//   .card .card-title {
+//     font-weight: 700;
+//     font-size: 30;
+//   }
+
+
+//   .card .btn {
+//     border-radius: 2em;
+//     background-color: teal;
+//     color: #ffffff;
+//     padding: 0.5em 1.5em;
+//   }
+//   .card .btn:hover {
+//     background-color: rgba(0, 128, 128, 0.7);
+//     color: #ffffff;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+//   }
+//   p{
+//     font-size: 15px;
+//   }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+.team .member{
+    // position: relative;
+    padding:15px;
+    box-shadow: 0px 2px 15px rgba(0,0,0,0.1);
+    border-radius:5px;
+    background: #fff;
+}
+.team .member .teampic{
+    overflow:hidden ;
+    width: 180px;
+    border-radius:60%;
+}
+.team .member .member-info{
+padding-left: 20px;
+}
+.team .member .member-info span{
+    font-size: 20px;
+    }
+.team .member h4{
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-size: 20px;
+    color: teal ;
+}
+.team .member .span{
+    display: block;
+    font-size: 15px;
+    padding-bottom: 10px;
+    position: relative;
+    font-weight: 500;
+
+
+}
+.team .member .span::after{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: black;
+    bottom: 0;
+    left:0;
+}
+.team .member p{
+    margin: 10px 0 0 0 ;
+    font-size: 14px;
+}
+.team .member.social{
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+.team .member .social a{
+    // display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 20px;
+    background: #eff2f8;
+
+}
+.team .member .social a i{
+    color: rgb(4, 13, 83);
+    font-size: 16px;
+    margin: 0 2px;
+}
+.team .member .social a:hover{
+    background:rgb(4, 13, 83);
+
+}
+.team .member .social a:hover i{
+    color: #fff;
+}
+.team .member .social a+a{
+    margin-left: 8px;   
+}
+section{
+    
+    overflow: hidden;
+}
+.section-title{
+    text-align: center;
+}
+.section-title h2{
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+    color: rgb(155, 26, 4);
+}
+.bi {
+    font-size: 24px;
+    color: #07325f;
+    cursor: pointer;
+}
+
+.bi[data-toggle="tooltip"] {
+    cursor: help;
+}
+.right{
+    text-align: right;
+}
+.right span{
+    color: rgb(30, 45, 159);
+    font-size: 20px;
+    padding-left: 13px;
+    color: #1d098f;
+   
+}
+.right span:hover{
+  background:rgb(88, 95, 143);
+
+}
+a i{
+    color: rgb(246, 246, 252);
+    font-size: 20px;
+    padding-right: 25px;
+  }

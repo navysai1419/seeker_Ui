@@ -1,0 +1,24 @@
+ <!-- <mat-drawer-container>
+  <mat-drawer mode="side" [opened]="sideBarOpen"> 
+    <mat-drawer mode="side" opened="true">
+    <app-sidenav></app-sidenav> 
+   </mat-drawer> 
+  <mat-drawer-content> -->
+  <app-header (toggleSidebarForMe)="sideBarToggler()"></app-header>
+    <app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
+    <app-sourcedataview
+     [collapsed]="isSideNavCollapsed"
+     [screenWidth]="screenWidth">
+    </app-sourcedataview>
+    
+<div class="main">
+  <router-outlet></router-outlet> 
+</div>
+
+    
+    
+      
+
+    
+
+ 

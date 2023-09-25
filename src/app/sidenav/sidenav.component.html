@@ -1,0 +1,45 @@
+<!-- <mat-nav-list>
+  <div class="logo py-4">
+    <img src="assets/images/logo1.jpg" alt="Company Logo" />
+  </div>
+  <mat-divider></mat-divider>
+  <h2 matSubheader class="mt-2">Dashboard</h2>
+
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/admin">
+    <mat-icon>admin_panel_settings</mat-icon> Admin Panel
+  </a>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/home">
+    <mat-icon>sourcedata</mat-icon> Source Data
+  </a>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/analytics">
+    <mat-icon>analytics</mat-icon>Analytics 
+  </a> -->
+  <!-- <a mat-list-item routerLinkActive="list-item-active" routerLink="/human-rep">
+    <mat-icon>bar_chart</mat-icon> HumanINT REP.
+  </a> -->
+  <!-- <a mat-list-item routerLinkActive="list-item-active" routerLink="/gis">
+    <mat-icon>map</mat-icon> GIS Analytics
+  </a>
+</mat-nav-list> -->
+<div class="container-fluid page">
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''">
+  <div class="logo-container">
+    <button class="logo" (click)="toggleCollapse()">S</button>
+    <div class="logo-text" @fadeInOut *ngIf="collapsed"> Seeker</div>
+      <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()">
+     <i class="fal fa-times close-icon"></i>
+    </button>
+    </div>
+    <ul class="sidenav-nav">
+      <li class="sidenav-nav-item" *ngFor="let data of navData">
+        <a  class="sidenav-nav-link" [routerLink]="[data.routeLink]"
+        routerLinkActive="active" 
+        [routerLinkActiveOptions]="{exact:true}"
+        >
+        <i class="sidenav-link-icon"[class]="data.icon"></i>
+        <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{data.label}}</span>
+      </a>
+      </li>
+    </ul>
+</div>
+</div>

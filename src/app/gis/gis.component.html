@@ -1,0 +1,62 @@
+<div class="container-fluid page">
+    <div class="d-flex page__box p-3 mt-2">GIS</div>
+    <div class="page__content shadow p-3 position-relative">
+      <div class="subscreen" style="height: 500px;">
+        <div class="sidebar" >
+          
+          <ul>
+            <li>
+              <button (click)="toggleSubscreen()">X</button>
+            </li>
+            <li>
+              <h5>Commute</h5>
+            <select [(ngModel)]="selectedInputType">
+              <option value="none">select</option>
+              <option value="id">ID</option>
+              <option value="Name">Name</option>
+              <option value="Mobie">Mobile</option>
+              <option value="Aadhar">Aadhar</option>
+              <option value="Pan">PAN</option>
+
+
+            </select>
+            
+           
+            <input *ngIf="selectedInputType === 'id'" [(ngModel)]="inputValue" placeholder="Enter Id" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Name'" [(ngModel)]="inputValue" placeholder="Enter Name" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Mobile'" [(ngModel)]="inputValue" placeholder="Enter Mobile" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Aadhar'" [(ngModel)]="inputValue" placeholder="Enter Aadhar" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Pan'" [(ngModel)]="inputValue" placeholder="Enter Pan" style="width: 100%; font-size: 16px;" />
+            </li>
+            <li>
+              <h5>Position</h5>
+              <select [(ngModel)]="selectedInputType">
+                <option value="none">select</option>
+              <option value="ID">ID</option>
+              <option value="Name">Name</option>
+              <option value="Mobie">Mobile</option>
+              <option value="Aadhar">Aadhar</option>
+              <option value="Pan">PAN</option>
+
+            </select></li>
+             <li>
+            <input *ngIf="selectedInputType === 'id'" [(ngModel)]="inputValue" placeholder="Enter Id" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Name'" [(ngModel)]="inputValue" placeholder="Enter Name" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Mobile'" [(ngModel)]="inputValue" placeholder="Enter Mobile" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Aadhar'" [(ngModel)]="inputValue" placeholder="Enter Aadhar" style="width: 100%; font-size: 16px;" />
+            <input *ngIf="selectedInputType === 'Pan'" [(ngModel)]="inputValue" placeholder="Enter Pan" style="width: 100%; font-size: 16px;" />
+          </li>
+            <!-- Add more navigation items as needed -->
+          </ul>
+        </div>
+        <div class="content">
+          <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15">
+            <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+          </agm-map>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      
+
+    </div>
+</div>

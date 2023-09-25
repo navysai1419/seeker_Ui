@@ -1,0 +1,289 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2"><a  routerLinkActive="list-item-active" routerLink="/admin">
+    <i class="bi bi-arrow-left-circle-fill"></i></a>Admin</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div class="section-title ">
+      <h2>Database</h2>    
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-outline-primary btn-rounded "data-toggle="modal" data-target="#adddatabase" data-mdb-ripple-color="dark">Add Collection </button>
+      <button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Backup Collection</button>
+      <button type="button"  class="btn btn-outline-primary btn-rounded" data-toggle="modal" data-target="#deletedatabase" data-mdb-ripple-color="dark">Delete Collection</button>
+      <button type="button" class="btn btn-outline-primary btn-rounded" data-mdb-ripple-color="dark">Restore Collection</button>
+    </div>
+    </div>
+
+    <!-- <h5><input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="onFileSelected($event)" /></h5>
+              <button style="margin-bottom:10px;" type="button" class="btn btn-info rounded-0" (change)="onFileSelected($event)" >
+                   Upload Excel File
+              </button> -->
+              <div class="container-fluid mt-4">
+  
+                  <!-- <h4>Upload Excel File</h4> -->
+                
+                  <form (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                      <label for="file"><h5>Select Excel File:</h5></label>
+                      <input
+                        type="file"
+                        id="file"
+                        name="file"
+                        accept=".xlsx, .xls"
+                        (change)="onFileSelected($event)"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                
+                    <div class="form-group">
+                      <label for="sheetType"><h5> Sheet Type:</h5></label>
+                      <select
+                        id="sheetType"
+                        name="sheetType"
+                        [(ngModel)]="selectedSheetType"
+                        class="form-control"
+                        required
+                      >
+                        <!-- Add options for different sheet types -->
+                        <option value="Guest">Guest</option>
+                        <option value="Seeker">Seeker</option>
+                        <option value="CDR">CDR</option>
+                        <option value="TDR">TDR</option>
+                        <option value="IDPR">IDPR</option>
+                        <option value="HumanINT">HumanINT</option>
+                      </select>
+                    </div>
+                
+                    <button type="submit" class="btn btn-success active">Upload</button>
+                  </form>
+                
+                  <!-- Display the uploaded file URL (if available) -->
+                  <div *ngIf="fileUrl">
+                    <h3>Uploaded File:</h3>
+                    <a [href]="fileUrl" target="_blank" rel="noopener noreferrer">{{ selectedFile?.name }}</a>
+                  </div>
+        
+                
+                <!-- <iframe [src]="fileUrl" width="100%" height="500" frameborder="0"></iframe> -->
+                <!-- Display the Excel file in an iframe -->
+            
+                <h5>Delete Excel Sheets by Sheet Type</h5>
+                <div class="form-group">
+                  <label for="sheetType"><h5> Sheet Type:</h5></label>
+                  <select
+                    id="sheetType"
+                    name="sheetType"
+                    [(ngModel)]="selectedSheetType"
+                    class="form-control"
+                    required
+                  >
+                    <!-- Add options for different sheet types -->
+                    <option value="Guest">Guest</option>
+                    <option value="Seeker">Seeker</option>
+                    <option value="CDR">CDR</option>
+                    <option value="TDR">TDR</option>
+                    <option value="IDPR">IDPR</option>
+                    <option value="HumanINT">HumanINT</option>
+                  </select>
+                </div>
+                <button class="btn btn-danger" (click)="deleteExcelSheets()">Delete</button>
+
+   
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="card shadow" style="width: 18rem;">
+            <div class="inner">
+              <img class="card-img-top" src="assets/images/databaseview.jpg" alt="Card image cap">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">guest_2023-02-17</h5>
+              <p class="card-text">It will shows list of people who have authentication.and admin can add users</p>
+             
+              <a href="/databaseview"><div class="icon-container">
+                <span class="bi bi-eye-fill" data-toggle="tooltip" data-placement="top" title="View"></span>
+              </div></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow" style="width: 18rem;">
+            <div class="inner">
+              <img class="card-img-top" src="assets/images/databaseview.jpg" alt="Card image cap">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">CDR Data</h5>
+              <p class="card-text"> It will shows data of people in the form of Excel sheet .Admin can upload data</p>
+              <a [href]="fileUrl" target="_blank" rel="noopener noreferrer">{{ selectedFile?.name }}<div class="icon-container">
+                <span class="bi bi-eye-fill" data-toggle="tooltip" data-placement="top" title="View"></span>
+              </div></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow" style="width: 18rem;">
+            <div class="inner">
+              <img class="card-img-top" src="assets/images/databaseview.jpg" alt="Card image cap">
+            </div>
+            
+            <div class="card-body text-center">
+              <h5 class="card-title">Seeker_2003-02-17</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="/databaseview"><div class="icon-container">
+                <span class="bi bi-eye-fill" data-toggle="tooltip" data-placement="top" title="View"></span>
+              </div></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pt-5">
+          <div class="card shadow" style="width: 18rem;">
+            <div class="inner">
+              <img class="card-img-top" src="assets/images/databaseview.jpg" alt="Card image cap">
+            </div>
+            
+            <div class="card-body text-center">
+              <h5 class="card-title">Collection4</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="/databaseview" ><div class="icon-container">
+                <span class="bi bi-eye-fill" data-toggle="tooltip" data-placement="top" title="View"></span>
+              </div></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pt-5">
+          <div class="card shadow" style="width: 18rem;">
+            <div class="inner">
+              <img class="card-img-top" src="assets/images/databaseview.jpg" alt="Card image cap">
+            </div>
+            
+            <div class="card-body text-center">
+              <h5 class="card-title">Collection 5</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="/databaseview"><div class="icon-container">
+                <span class="bi bi-eye-fill" data-toggle="tooltip" data-placement="top" title="View"></span>
+              </div></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 pt-5">
+          <div class="card shadow" style="width: 18rem;">
+            <div class="inner">
+              <img class="card-img-top" src="assets/images/databaseview.jpg" alt="Card image cap">
+            </div>
+            
+            <div class="card-body text-center">
+              <h5 class="card-title">Collection 5</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a href="/databaseview"><div class="icon-container">
+                <span class="bi bi-eye-fill" data-toggle="tooltip" data-placement="top" title="View"></span>
+              </div></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div> 
+    
+  
+
+    
+    <div class="modal fade" id="adddatabase" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title w-100 text-center" id="exampleModalLabel"> Add Collection</h5>
+            <h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></h5>
+          </div>
+          <div class="modal-body">
+            <h5>Upload Excel File</h5>
+                
+            <form (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="file"></label>
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  accept=".xlsx, .xls"
+                  (change)="onFileSelected($event)"
+                  class="form-control"
+                  required
+                />
+              </div>
+          
+              <div class="form-group">
+                <label for="sheetType"><h5>Select Sheet Type:</h5></label>
+                <select
+                  id="sheetType"
+                  name="sheetType"
+                  [(ngModel)]="selectedSheetType"
+                  class="form-control"
+                  required
+                >
+                  <!-- Add options for different sheet types -->
+                  <option value="Guest">Guest</option>
+                  <option value="Seeker">Seeker</option>
+                  <option value="CDR">CDR</option>
+                  <option value="TDR">TDR</option>
+                  <option value="IDPR">IDPR</option>
+                  <option value="HumanINT">HumanINT</option>
+                </select>
+              </div>
+          
+              <button type="submit" class="btn btn-success active">Upload</button>
+            </form>
+          
+            <!-- Display the uploaded file URL (if available) -->
+            <div *ngIf="fileUrl">
+              <h3>Uploaded File:</h3>
+              <a [href]="fileUrl" target="_blank" rel="noopener noreferrer">{{ selectedFile?.name }}</a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="doSomething()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="deletedatabase" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title w-100 text-center" id="exampleModalLabel"> Delete Collection</h5>
+            <h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></h5>
+          </div>
+          <div class="modal-body">
+          
+              <div class="form-group">
+                <label for="sheetType"><h5>Select Sheet Type:</h5></label>
+                <select
+                  id="sheetType"
+                  name="sheetType"
+                  [(ngModel)]="selectedSheetType"
+                  class="form-control"
+                  required
+                >
+                  <!-- Add options for different sheet types -->
+                  <option value="Guest">Guest</option>
+                  <option value="Seeker">Seeker</option>
+                  <option value="CDR">CDR</option>
+                  <option value="TDR">TDR</option>
+                  <option value="IDPR">IDPR</option>
+                  <option value="HumanINT">HumanINT</option>
+                </select>
+
+              </div>
+          
+              <button type="submit" class="btn btn-danger active">Delete</button>
+            
+          
+  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="doSomething()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+    

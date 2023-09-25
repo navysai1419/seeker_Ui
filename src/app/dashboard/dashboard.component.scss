@@ -1,0 +1,41 @@
+@import "../home/home.component.scss";
+
+.inner{
+  overflow: hidden;
+
+}
+.inner img{
+  transition: all 1.5s ease;
+
+}
+.inner:hover img{
+  transform: scale(1.5);
+
+}
+p{
+  font-size: 15px;
+}
+a i{
+  color: #07325f;
+  font-size: 20px;
+  padding-right: 25px;
+}
+a span{
+  color: rgb(236, 236, 244);
+  font-size: 20px;
+  padding-right: 25px;
+}
+ 
+ a:hover i{
+  color: #250bbc;
+}
+.section-title{
+  text-align: center;
+}
+.section-title h3{
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  position: relative;
+  color: rgb(155, 26, 4);
+}

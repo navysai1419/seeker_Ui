@@ -1,0 +1,60 @@
+@import "../home/home.component.scss";
+tr{
+    font-size: 25px;
+}
+thead{
+    background-color: rgb(30, 0, 255);
+}
+th{
+    font-size: 20px;
+}
+td{
+    font-size: 17px;
+}
+.icon-container {
+    display: inline-block;
+    position: relative;
+}
+a i{
+    color: rgb(246, 246, 252);
+    font-size: 20px;
+    padding-right: 25px;
+  }
+
+.bi {
+    font-size: 24px;
+    color: #07325f;
+    cursor: pointer;
+}
+
+.bi[data-toggle="tooltip"] {
+    cursor: help;
+}
+.right{
+    text-align: right;
+}
+.right span{
+    color: rgb(30, 45, 159);
+    font-size: 20px;
+    padding-left: 13px;
+    color: #1d098f;
+   
+}
+.right span:hover{
+  background:rgb(88, 95, 143);
+
+}
+
+// .social .media a i{
+//   color: rgb(30, 45, 159);
+//     font-size: 25px;
+//     margin: 0 2px;    
+
+// }
+// .social .media a:hover{
+//   background:rgb(88, 95, 143);
+
+// }
+// .social .media a:hover i{
+//   color: #fff;
+// }
