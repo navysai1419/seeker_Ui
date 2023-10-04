@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse , HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
@@ -9,31 +9,52 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8081'; // Replace with your Spring Boot API URL
+  private baseUrl = 'http://localhost:8080'; // Replace with your Spring Boot API URL
 
   constructor(private http: HttpClient) { }
-
-  uploadExcelFile(sheetType: string, file: File): Observable<string> {
+ 
+  uploadFile(file: File, collectionName: string) {
     const formData = new FormData();
-    formData.append('file', file, file.name); // Add the file to the FormData
-    formData.append('sheetType', sheetType); // Add the sheet type to the FormData
+    formData.append('file', file);
+    formData.append('collectionName', collectionName);
 
-    return this.http.post<string>(`${this.baseUrl}/api/upload`, formData);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
 
+    return this.http.post(`${this.baseUrl}/api/upload-csv`, formData, { headers });
+  }
+  
+  deleteCollection(collectionName: string) {
+    const url = `${this.baseUrl}/api/delete-collection/${collectionName}`;
+    return this.http.delete(url);
   }
 
 
- deleteExcelSheetsBySheetType(sheetType: string): Observable<any> {
-        const url = `${this.baseUrl}/delete/${sheetType}`;
-        return this.http.delete(url);
-    }
-
-  getExcelFile(id: string): Observable<Blob> {
-    const headers = new HttpHeaders().set('Accept', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-    return this.http.get(`${this.baseUrl}/api/excel/${id}`, {
-      headers: headers,
-      responseType: 'blob'
-    });
+  getCsvData(collectionName: string) {
+    return this.http.get(`${this.baseUrl}/api/metadata?collectionName=${collectionName}`);
   }
+  addHeaderToCSV(collectionName: string, newHeader: string): Observable<string> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = new HttpParams().set('newHeader', newHeader); // Include the newHeader parameter
+
+    return this.http.put<string>(
+      `${this.baseUrl}/api/add-header/${collectionName}`,
+      null,
+      { headers, params }
+    );
+  }
+removeHeaderFromCSV(collectionName: string, headerToRemove: string): Observable<any> {
+  const url = `${this.baseUrl}/api/remove-header/${collectionName}?headerToRemove=${headerToRemove}`;
+
+  return this.http.put(url,null);
+}
+editHeaderInCSV(collectionName: string, oldHeader: string, newHeader: string): Observable<any> {
+  const url = `${this.baseUrl}/api/edit-header/${collectionName}?oldHeader=${oldHeader}&newHeader=${newHeader}`;
+
+  return this.http.put(url, null); 
+}
+
+retrieveCSVData(collectionName: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/api/retrieve-csv?collectionName=${collectionName}`);
+}
 }

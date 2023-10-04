@@ -5,9 +5,27 @@
   display: flex;
   height: 100%;
 }
+.subscreen {
+  position: relative;
+}
+/* Style for the minimized sidebar */
+.sidebar.minimized {
+  width: 90px; /* Adjust the width as needed */
+}
+
+/* Style for the content when sidebar is minimized */
+.sidebar.minimized + .content {
+  margin-left: 90px; /* Should match the width of the minimized sidebar */
+}
+
+
+
+.sidebar.minimized + .content {
+  margin-left: 50px; /* Should match the width of the minimized sidebar */
+}
 
 .sidebar {
-  width: 250px;
+  width: 350px;
   background: #1e293b;
   color: #fff;
   transition: transform 0.3s; 
@@ -44,7 +62,9 @@
   padding: 20px;
   height: 100%;
 }
-
+.dropdown-container button {
+  margin-top: 10px; /* Adjust the margin as needed */
+}
 /* Style the "X" button */
 .sidebar button {
   background-color: transparent;
@@ -53,7 +73,10 @@
   font-size: 20px;
   cursor: pointer;
 }
-
+.input-container {
+  margin-top: 10px; 
+  margin-left: 10px;
+}
 
 .sidebar select,
 .sidebar input[type="text"] {
@@ -128,3 +151,32 @@ agm-marker img {
 .sidebar button:active {
   color: #ff6347;
 }
+/* Adjust the layout to place "-" button next to the dropdown */
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.bi-x-circle-fill {
+  font-size: 15px; 
+  color: red; 
+  cursor: pointer;
+  margin-left: 5px; 
+}
+.input-container {
+  margin-left: 10px; /* Adjust the margin as needed to create space between dropdown and input */
+}
+.bi-geo-fill{
+  font-size: 20px; 
+}
+.bi-geo-alt-fill{
+  font-size: 20px; 
+}
+ .fa-times close-icon
+ {
+  font-size: 15px; 
+  color: red; 
+  cursor: pointer;
+  margin-left: 5px; 
+ }

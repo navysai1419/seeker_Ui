@@ -17,56 +17,26 @@
         
         
     </div>
-        
-    <table class="table  table-bordered table-hover">
-        <thead class="bg-info text-white">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Check Type</th>
-            </tr>
+    <table class="styled-table">
+        <thead>
+          <tr>
+            <th *ngFor="let columnName of csvData[0] | keyvalue">{{ columnName.key }}</th>
+          </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>380</td>
-                <td>Shatanu Bisaria</td>
-                <td>Added</td>    
-            </tr>
-            <tr>
-                <td>381</td>
-                <td>Ritik batham</td>
-                <td>Added</td>    
-            </tr>
-            <tr>
-                <td>380</td>
-                <td>Shathanu Gatham</td>
-                <td>Check-IN</td>    
-            </tr>
-            <tr>
-                <td>380</td>
-                <td>Shitanshu Tiweri</td>
-                <td>Check-IN</td>    
-            </tr>
-            <tr>
-                <td>380</td>
-                <td>Rakesh Mallick</td>
-                <td>Check-IN</td>
-                   
-            </tr>
-            <tr>
-                <td>380</td> 
-                <td>Mahmmed Qualid</td>
-                <td>Check-IN</td> 
-            </tr>
-            <tr>
-                <td>380</td>
-                <td>Iqbal Quadiri</td>
-                <td>Check-IN</td>
-                  
-            </tr>
-           
+          <tr *ngFor="let row of csvData; let i = index" class="table-row" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)">
+            <td *ngFor="let cell of row | keyvalue">{{ cell.value }}
+            <div class="icon-container">
+              <span class="bi bi-plus-square" *ngIf="showAdd[i]" (click)="addRow(i)" data-toggle="tooltip" data-placement="top" title="Add"></span>
+              <span class="bi bi-pencil-square" *ngIf="showEdit[i]" (click)="editRow(row)" data-toggle="tooltip" data-placement="top" title="Edit"></span>
+              <span class="bi bi-dash-square" *ngIf="showDelete[i]" (click)="deleteRow(i)" data-toggle="tooltip" data-placement="top" title="Delete"></span>
+            </div>
+        </td>
+          </tr>
         </tbody>
-    </table>
+      </table>
+      
+        
 </div>
 
 </div>

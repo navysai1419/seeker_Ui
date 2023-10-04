@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import * as XLSX from 'xlsx';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { catchError } from 'rxjs/operators';
+import { ApiService } from '../api.service';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -8,18 +11,236 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./databaseview.component.scss']
 })
 export class DatabaseviewComponent implements OnInit {
-  tableData: any[] = []; 
-  columnNames: string[] = []; 
-  fileUrl: string | undefined; // Store the Excel data here
+  collectionName: string = '';
+  headers: string[] = [];
+  data: any[] = [];
+  selectedFileName: string | undefined;
+  selectedFile: File | null = null;
+  selectedCollection = '';
+  errorMessage: string = '';
+  successMessage:string = '';
+  showEdit: boolean[] = [];
+  showDelete: boolean[] = [];
+  showAdd:boolean[]=[];
+  newHeader: string = '';
+  headerToRemove:string='';
+  oldHeader: string = ''; // Define the old header
 
-  constructor() {}
+  constructor(private apiService: ApiService,private route: ActivatedRoute,private http: HttpClient,
+    private renderer: Renderer2, private el: ElementRef) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.collectionName = params.get('collectionName')!;
+      this.getCSVData(); // Fetch data from the backend
+    });
 
+    const dropZone = this.el.nativeElement.querySelector('.file-drop-container');
 
-    if (this.tableData.length > 0) {
-      this.columnNames = Object.keys(this.tableData[0]);
+    if (dropZone) {
+      this.renderer.listen(dropZone, 'dragover', (event) => {
+        this.onDragOver(event);
+      });
+
+      this.renderer.listen(dropZone, 'drop', (event) => {
+        this.onDrop(event);
+      });
     }
-    // The data will be automatically available here if you navigate from "DatabasesComponent"
   }
+  
+
+  getCSVData(): void {
+    this.apiService.getCsvData(this.collectionName).subscribe(
+      (response: any) => {
+        if (response.length > 0) {
+          this.data = response;
+          this.errorMessage = '';
+        } else {
+          this.data = [];
+          this.errorMessage = 'No data available.';
+        }
+      },
+      (error) => {
+        this.data = [];
+        this.errorMessage =
+          'Error fetching CSV data: ' + error.error || error.message;
+      }
+    );
+  }
+
+  showButtons(index: number): void {
+    this.showEdit[index] = true;
+    this.showDelete[index] = true;
+    this.showAdd[index] = true;
+
+  }
+
+  hideButtons(index: number): void {
+    this.showEdit[index] = false;
+    this.showDelete[index] = false;
+    this.showAdd[index] = false;
+    
+  }
+  unhighlightIcon(i: number): void {
+    const iconElements = this.el.nativeElement.querySelectorAll('.bi');
+
+    if (iconElements && iconElements[i]) {
+      this.renderer.removeClass(iconElements[i], 'highlighted');
+    }
+  }
+
+  editRow(data: any): void {
+    // Implement edit row logic here
+    console.log('Editing row:', data);
+  }
+
+  deleteRow(index: number): void {
+    // Implement delete row logic here
+    console.log('Deleting row at index:', index);
+    this.data.splice(index, 1);
+  }
+
+  addRow(index:number): void {
+    // Implement add row logic here
+    const newRow = { id: this.data.length + 1, name: `Row ${this.data.length + 1}` };
+    this.data.push(newRow);
+  }
+  
+
+  removeHeader() {
+    this.apiService.removeHeaderFromCSV(this.collectionName, this.headerToRemove)
+      .subscribe(
+        (response) => {
+          console.log('Header removed successfully', response);
+          // Handle success or update UI as needed
+        },
+        (error) => {
+          console.error('Error removing header', error);
+          // Handle error or display an error message
+        }
+      );
+  }
+  editHeader() {
+    this.apiService.editHeaderInCSV(this.collectionName, this.oldHeader, this.newHeader)
+    .pipe(
+      catchError((error) => {
+        console.error('Error updating header', error);
+        this.errorMessage = 'Error updating header: ' + error.message;
+        throw error; 
+      })
+      )
+      .subscribe(
+        (response) => {
+          console.log('Header updated successfully', response);
+          this.successMessage = 'Header updated successfully';
+         
+        }
+      );
+  }
+  addHeaderAndRow(): void {
+    if (!this.newHeader) {
+      this.errorMessage = 'New header is required.';
+      return;
+    }
+  
+    // First, add the new header
+    this.apiService.addHeaderToCSV(this.collectionName, this.newHeader)
+      .subscribe(
+        (response) => {
+          this.successMessage = 'Header added successfully';
+          this.errorMessage = '';
+          this.newHeader = '';
+  
+          // After adding the header, add a new row
+          const newRow = { id: this.data.length + 1, [this.newHeader]: null };
+          this.data.push(newRow);
+        },
+        (error) => {
+          this.errorMessage = 'Error adding header: ' + error.message;
+          this.successMessage = '';
+        }
+      );
+  }
+
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      this.uploadFiles(event.dataTransfer.files);
+    }
+  }
+  
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+  
+  triggerFileInput() {
+    // Trigger the hidden file input element
+    const fileInput = document.querySelector<HTMLInputElement>('#fileInput');
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+  
+ 
+  onFileSelected(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.files) {
+      this.selectedFile = inputElement.files[0];
+    }
+  }
+  private uploadFiles(files: FileList | null) {
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file.type === 'text/csv') {
+      
+        this.selectedFile = file; // Store the selected file
+        this.selectedFileName = file.name;
+        console.log('Uploading CSV file:', file);
+      } else {
+        console.error('Invalid file type. Please select a CSV file.');
+      }
+    }
+  }
+  
+  onUpload() {
+    if (this.selectedFile) {
+      
+      this.apiService.uploadFile(this.selectedFile, this.collectionName).subscribe(
+        (response) => {
+          console.log('File uploaded successfully:', response);
+          this.selectedFile = null;
+          this.selectedFileName = '';
+        },
+        (error) => {
+          console.error('An error occurred while uploading the file:', error);
+          this.selectedFile = null;
+          this.selectedFileName = '';
+        }
+      );
+    } else {
+      console.error('No file selected.');
+    }
+  }
+
+  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

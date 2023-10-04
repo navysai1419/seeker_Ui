@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  
+  errorMessage: string = '';
+  collectionName = '';
+  csvMetadata: any = {};
+
+
+  constructor( private router: Router) { }
 
   ngOnInit(): void {
   }
-
+  viewTable(collectionName: string): void {
+    if (collectionName.trim() === '') {
+      this.errorMessage = 'Please provide a collection name.';
+      return;
+    }
+  
+   
+    this.router.navigate(['/source-view', collectionName]);
+  }
+ 
+  
 }

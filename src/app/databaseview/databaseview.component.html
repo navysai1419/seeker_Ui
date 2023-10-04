@@ -1,121 +1,108 @@
 <div class="container-fluid page">
-    <div class="d-flex page__box p-3 mt-2"><a  routerLinkActive="list-item-active" routerLink="/admin">
+    <div class="d-flex page__box p-3 mt-2"><a  routerLinkActive="list-item-active" routerLink="/databases">
         <i class="bi bi-arrow-left-circle-fill"></i></a>Admin</div>
     <div class="page__content shadow p-3 position-relative">
 <div class="container">
+<div class="row">
     <div class="section-title ">
-        <h3>guest_2023-02-17</h3>    
+        <h3 *ngIf="collectionName">{{collectionName}}</h3>    
       </div>
-    <div class="right">
-        <span class="bi bi-pencil-fill" data-toggle="tooltip" data-placement="top" title="Edit"></span>
-        <span class="bi bi-save-fill" data-toggle="tooltip" data-placement="top" title="Save"></span>
-    </div>
-        
-    <!-- <table class="table  table-bordered table-hover">
-        <thead class="bg-info text-white">
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>length</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>id</td>
-                <td>Number</td>
-                <td>10</td>    
-            </tr>
-            <tr>
-                <td>name</td>
-                <td>String</td>
-                <td>Any</td>    
-            </tr>
-            <tr>
-                <td>rank</td>
-                <td>String</td>
-                <td>100</td>    
-            </tr>
-            <tr>
-                <td>mobile_no</td>
-                <td>Number</td>
-                <td>20</td>    
-            </tr>
-            <tr>
-                <td>Id_Adhaar</td>
-                <td>Number</td>
-                <td>12</td>
-                   
-            </tr>
-            <tr>
-                <td>id_PAN</td> 
-                <td>String</td>
-                <td>10</td> 
-            </tr>
-            <tr>
-                <td>id_DL</td>
-                <td>String</td>
-                <td>10</td>
-                  
-            </tr>
-            <tr>
-                <td>id_Voter_ID</td>
-                <td>String</td> 
-                <td>100</td> 
-            </tr>
-            <tr>
-                <td>id_ARMY_ID</td>
-                <td>String</td>
-                <td>100</td>  
-            </tr>
-            <tr>
-                <td>Add_time</td>
-                <td>Date</td>
-                <td>100</td>  
-            </tr>
-            <tr>
-                <td>address</td> 
-                <td>String</td>
-                <td>100</td> 
-            </tr>
-            <tr>
-                <td>Addloation</td>  
-                <td>String</td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>formation</td>
-                <td>String</td>
-                <td>100</td>  
-            </tr>
-            <tr>
-                <td>ptype</td>  
-                <td>String</td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>threat</td>  
-                <td>String</td>
-                <td>100</td>
-            </tr>
-        </tbody>
-    </table> -->
-    <a [href]="fileUrl" download="excel-file.xlsx" class="btn btn-primary">View Excel Sheet</a>
 
-    <!-- Display the table (if data is available) -->
-    <table *ngIf="tableData.length > 0" class="table  table-bordered table-hover">
-      <thead class="bg-info text-white">
-        <tr>
-            <th *ngFor="let columnName of columnNames">{{ columnName }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of tableData">
-            <td *ngFor="let columnName of columnNames">{{ row[columnName] }}</td>
-          <!-- Repeat for other columns -->
-        </tr>
-      </tbody>
-    </table>
-</div>
+    <div class="col-md-7">
+     <table class="styled-table">
+        
+         <th>
+            <tr>Column names</tr>
+        </th>
+         <tbody>
+          <tr *ngFor="let data of data let i = index" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)">
+            <td>{{ data }}
+                <div class="icon-container">
+                    <span class="bi bi-plus-square" *ngIf="showAdd[i]"(mouseleave)="unhighlightIcon(i)" (click)="addRow(i)"  data-toggle="tooltip" data-placement="top" title="Add"></span>
+                <span class="bi bi-pencil-square" *ngIf="showEdit[i]" (click)="editRow(data)"  data-toggle="tooltip" data-placement="top" title="Edit"></span>
+                <span class="bi bi-dash-square" *ngIf="showDelete[i]" (click)="deleteRow(i)"  data-toggle="tooltip" data-placement="top" title="Delete"></span>
+                
+                </div>
+                <div class="text-content"></div>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      <div class="col-md-5 ">
+        <div class="file-upload-container" style="margin-right:100px;">
+            <div class="file-drop-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+              <p>Drag and drop a CSV file here</p>
+              <p>or</p>
+              <label class="upload-icon">
+                <input type="file" (change)="onFileSelected($event)" hidden #fileInput />
+                <span class="bi bi-cloud-upload"></span>
+              </label>
+              <button
+              type="button"
+              (click)="onUpload()"
+              class="btn btn-outline-primary active btn-upload">Upload</button>
+            </div>
+            <p class="file-name" *ngIf="selectedFileName">{{ selectedFileName }}</p>
+          </div>
+          
+          
+      </div>
+      <div>
+        <h2>Add Header and Row</h2>
+      
+        <div class="form-group">
+          <label for="newHeader">New Header:</label>
+          <input type="text" id="newHeader" name="newHeader" [(ngModel)]="newHeader" class="form-control">
+        </div>
+      
+        <button class="btn btn-primary" (click)="addHeaderAndRow()">Add Header and Row</button>
+      
+        <!-- Display success or error messages -->
+        <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      </div>
+      
+    <h2>Remove Header from MongoDB Collection</h2>
+    <form (submit)="removeHeader()">
+      <div class="form-group">
+        <label for="collectionName">Collection Name:</label>
+        <input type="text" id="collectionName" name="collectionName" [(ngModel)]="collectionName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="headerToRemove">Header to Remove:</label>
+        <input type="text" id="headerToRemove" name="headerToRemove" [(ngModel)]="headerToRemove" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-danger">Remove Header</button>
+    </form>
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  </div>
+  
+
+  <div>
+    <h2>Edit Header in MongoDB Collection</h2>
+    <form (submit)="editHeader()">
+      <div class="form-group">
+        <label for="collectionName">Collection Name:</label>
+        <input type="text" id="collectionName" name="collectionName" [(ngModel)]="collectionName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="oldHeader">Old Header:</label>
+        <input type="text" id="oldHeader" name="oldHeader" [(ngModel)]="oldHeader" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="newHeader">New Header:</label>
+        <input type="text" id="newHeader" name="newHeader" [(ngModel)]="newHeader" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Edit Header</button>
+    </form>
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  </div>
+
+
 
     </div>
 </div>

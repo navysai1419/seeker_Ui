@@ -33,13 +33,13 @@ const routes: Routes = [
   {path:'cit-analytics',component:CitAnalyticsComponent},
   {path:'human-rep',component:HumanRepComponent},
   {path:'gis',component:GisComponent},
-  {path:'databaseview',component:DatabaseviewComponent},
+  {path:'database-view/:collectionName',component:DatabaseviewComponent},
   {path:'mergedata',component:MergedataComponent},
   {path:'gis-analytics',component:GisAnalyticsComponent},
   {path:'unsualmovements',component:UnsualmovementsComponent},
   {path:'anomalies',component:AnomaliesComponent},
   {path:'analytics',component:AnalyticsComponent},
-  {path:'source-view',component:SourceViewComponent}
+  {path:'source-view/:collectionName',component:SourceViewComponent}
 
 
 ];

@@ -1,51 +1,58 @@
 <div class="container-fluid page">
     <div class="d-flex page__box p-3 mt-2">GIS</div>
     <div class="page__content shadow p-3 position-relative">
-      <div class="subscreen" style="height: 500px;">
-        <div class="sidebar" >
-          
+      <div class="subscreen" [style.height.px]="subscreenHeight"  >
+        
+        <div class="sidebar"  [ngClass]="{ 'minimized': sidebarMinimized }" >
+          <button (click)="toggleMinimization()">
+            <span *ngIf="showSidebar" class="fal fa-times close-icon"></span>
+            <span *ngIf="!showSidebar">Open</span>
+          </button>
           <ul>
-            <li>
-              <button (click)="toggleSubscreen()">X</button>
+            <li class="bi bi-geo-fill" >
+              <h5 *ngIf="!sidebarMinimized" >
+                Commute
+                <button (click)="addDropdown('commute')" class="bi bi-plus-circle-fill"  style="font-size: small;"></button>
+              </h5>
+              <ng-container *ngFor="let dropdown of commuteDropdowns; let i = index">
+                <div class="dropdown-container" *ngIf="!sidebarMinimized">
+              
+                <select [(ngModel)]="commuteDropdowns[i].selectedInputType">
+                  <option value="none">select</option>
+                  <option value="id">ID</option>
+                  <option value="Name">Name</option>
+                  <option value="Mobile">Mobile</option>
+                 <option value="Aadhar">Aadhar</option>
+                 <option value="Pan">PAN</option>
+                </select>
+                <div class="input-container">
+                <input *ngIf="commuteDropdowns[i].selectedInputType !== 'none'" [(ngModel)]="commuteDropdowns[i].inputValue" [placeholder]=" commuteDropdowns[i].selectedInputType" style="width: 100%; font-size: 16px;" />
+                </div>
+                <button (click)="removeDropdown('commute', i)" class="bi bi-dash-circle-fill" style="margin-left: 10px;"></button>
+                </div>
+              </ng-container>
             </li>
-            <li>
-              <h5>Commute</h5>
-            <select [(ngModel)]="selectedInputType">
-              <option value="none">select</option>
-              <option value="id">ID</option>
-              <option value="Name">Name</option>
-              <option value="Mobie">Mobile</option>
-              <option value="Aadhar">Aadhar</option>
-              <option value="Pan">PAN</option>
-
-
-            </select>
+            <li  class="bi bi-geo-alt-fill" >
+              <h5  *ngIf="!sidebarMinimized">
+                Position
+                <button (click)="addDropdown('position')"class="bi bi-plus-circle-fill" style="font-size: small;"></button>
+              </h5>
+              <ng-container *ngFor="let dropdown of positionDropdowns; let i = index">
+              <div class="dropdown-container" *ngIf="!sidebarMinimized">
+                <select [(ngModel)]="positionDropdowns[i].selectedInputType">
+                  <option value="none">select</option>
+                  <option value="ID">ID</option>
+                  <option value="Name">Name</option>
+                  <option value="Mobile">Mobile</option>
+                   <option value="Aadhar">Aadhar</option>
+                   <option value="Pan">PAN</option>
+                </select>
+                <input *ngIf="positionDropdowns[i].selectedInputType !== 'none'" [(ngModel)]="positionDropdowns[i].inputValue" [placeholder]="positionDropdowns[i].selectedInputType" style="width: 100%; font-size: 16px;" />
+                <button (click)="removeDropdown('position', i)" class="bi bi-dash-circle-fill" style="margin-left: 10px;"></button>
+              </div>
+              </ng-container>
+            </li>
             
-           
-            <input *ngIf="selectedInputType === 'id'" [(ngModel)]="inputValue" placeholder="Enter Id" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Name'" [(ngModel)]="inputValue" placeholder="Enter Name" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Mobile'" [(ngModel)]="inputValue" placeholder="Enter Mobile" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Aadhar'" [(ngModel)]="inputValue" placeholder="Enter Aadhar" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Pan'" [(ngModel)]="inputValue" placeholder="Enter Pan" style="width: 100%; font-size: 16px;" />
-            </li>
-            <li>
-              <h5>Position</h5>
-              <select [(ngModel)]="selectedInputType">
-                <option value="none">select</option>
-              <option value="ID">ID</option>
-              <option value="Name">Name</option>
-              <option value="Mobie">Mobile</option>
-              <option value="Aadhar">Aadhar</option>
-              <option value="Pan">PAN</option>
-
-            </select></li>
-             <li>
-            <input *ngIf="selectedInputType === 'id'" [(ngModel)]="inputValue" placeholder="Enter Id" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Name'" [(ngModel)]="inputValue" placeholder="Enter Name" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Mobile'" [(ngModel)]="inputValue" placeholder="Enter Mobile" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Aadhar'" [(ngModel)]="inputValue" placeholder="Enter Aadhar" style="width: 100%; font-size: 16px;" />
-            <input *ngIf="selectedInputType === 'Pan'" [(ngModel)]="inputValue" placeholder="Enter Pan" style="width: 100%; font-size: 16px;" />
-          </li>
             <!-- Add more navigation items as needed -->
           </ul>
         </div>
