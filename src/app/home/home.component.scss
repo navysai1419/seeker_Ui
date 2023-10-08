@@ -39,39 +39,41 @@
     font-size: 15px;
   }
   
-   .social a i{
-    color: rgb(30, 45, 159);
-    font-size: 20px;
-    margin: 0 2px;
-}
-.social a:hover{
-  background:rgb(88, 95, 143);
-
-}
-.social a:hover i{
-  color: #fff;
-}
-.social a+a{
-  margin-left: 8px;   
-}
-// .social .media a i{
-//   color: rgb(30, 45, 159);
-//     font-size: 25px;
-//     margin: 0 2px;    
-
-// }
-// .social .media a:hover{
-//   background:rgb(88, 95, 143);
-
-// }
-// .social .media a:hover i{
-//   color: #fff;
-// }
-.social a{
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: #eff2f8;
-  
+  .icon-container {
+    display: inline-block;
+    position: relative;
+    justify-content: space-between;
   }
+  .icon-container {
+    font-size: 20px;
+    display: inline-block;
+    position: relative;
+    justify-content: space-between;
+  }
+  
+  .icon-container .bi {
+    font-size: 25px;
+    cursor: pointer;
+    margin: 0 5px; 
+    cursor: pointer;
+    color: #8c8e8e; 
+  }
+  
+  .icon-container .bi:hover {
+    color: #07325f; 
+  }
+  
+  
+  .icon-container .bi[data-toggle="tooltip"] {
+    cursor: help;
+  }
+  .section-title{
+    text-align: left;
+}
+.section-title h2{
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+    color: rgb(155, 26, 4);
+}

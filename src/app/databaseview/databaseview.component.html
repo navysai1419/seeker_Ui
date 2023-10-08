@@ -31,7 +31,7 @@
       </table>
     </div>
       <div class="col-md-5 ">
-        <div class="file-upload-container" style="margin-right:100px;">
+        <div class="file-upload-container">
             <div class="file-drop-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
               <p>Drag and drop a CSV file here</p>
               <p>or</p>
@@ -43,8 +43,12 @@
               type="button"
               (click)="onUpload()"
               class="btn btn-outline-primary active btn-upload">Upload</button>
+              <div *ngIf="loading" class="loading-symbol">
+                <i class="bi bi-hourglass-split"></i> Uploading...
+              </div>
+              <p class="file-name" *ngIf="selectedFileName">{{selectedFileName}}</p>
             </div>
-            <p class="file-name" *ngIf="selectedFileName">{{ selectedFileName }}</p>
+           
           </div>
           
           

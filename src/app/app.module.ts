@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AgmCoreModule } from '@hudsontavares/agm-core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { AdminComponent } from './admin/admin.component';
@@ -26,7 +26,7 @@ import { HumanIntAnalyticsComponent } from './human-int-analytics/human-int-anal
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
-
+import { NgProgressModule } from 'ngx-progressbar';
 import { CitAnalyticsComponent } from './cit-analytics/cit-analytics.component';
 import { HumanRepComponent } from './human-rep/human-rep.component';
 import { GisComponent } from './gis/gis.component';
@@ -42,6 +42,7 @@ import { MarkersComponent } from './markers/markers.component';
 import { SearchComponent } from './search/search.component';
 import { MapComponent } from './map/map.component';
 import { environment } from './environments/environment';
+import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
 // import {} from 'googlemaps';
 
 @NgModule({
@@ -70,7 +71,9 @@ import { environment } from './environments/environment';
     SourceViewComponent,
     MarkersComponent,
     SearchComponent,
-    MapComponent
+    MapComponent,
+    DeleteCollectionDialogComponent,
+   
   ],
   imports: [
     BrowserModule,
@@ -86,7 +89,9 @@ import { environment } from './environments/environment';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatGridListModule,
+    NgProgressModule,
     FormsModule,
+    MatDialogModule,
     RouterModule.forRoot([]),
     HttpClientModule,
     AgmCoreModule.forRoot({

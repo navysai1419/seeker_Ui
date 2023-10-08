@@ -58,3 +58,51 @@ a i{
     font-size: 20px;
     padding-right: 25px;
   }
+  /* navbar.scss */
+
+// Navigation bar styles
+nav {
+    background-color: #ffff;
+    padding: 10px 0;
+    border-bottom: 2px solid #fff;
+  }
+  
+  // Button bar styles
+  .button-bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+     
+    display: flex;
+    justify-content: center; 
+  
+  }
+  .button-bar li {
+    margin: 0;
+    background-color: #fff;
+
+  }
+  
+  .button {
+    display: inline-block;
+    padding: 5px 15px; /* Decrease the button padding for a smaller size */
+    font-size: 14px; 
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    background-color: #190707;
+    transition: background-color 0.3s ease;
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin: 0 10px; // Add spacing between buttons
+  }
+  
+  .button:hover {
+    background-color: #555;
+  }
+  
+  
+  .button.active {
+    background-color: #555;
+  }
+  

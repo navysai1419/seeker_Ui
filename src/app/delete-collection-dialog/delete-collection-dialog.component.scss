@@ -1,0 +1,84 @@
+.dialog-content {
+    text-align: center;
+  }
+  
+  .yes-button {
+    background-color: #e53935; 
+    color: #fff; 
+  }
+  
+  .no-button {
+    background-color: #2196f3; /* Blue background color */
+    color: #fff; /* White text color */
+  }
+  .mat-dialog-container {
+    max-width: 20px; 
+  }
+  /* Center the dialog */
+.mat-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); 
+}
+
+.mat-dialog-container {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+  background-color: #fff; 
+  border-radius: 4px; 
+  width: 300px; 
+}
+
+
+.mat-dialog-title {
+  font-size: 24px;
+  background-color: #2196f3; 
+  color: #fff; 
+  padding: 16px; 
+  border-radius: 4px 4px 0 0; 
+}
+
+.mat-dialog-content {
+  text-align: center;
+  font-size: 18px;
+  padding: 16px;
+}
+
+
+.mat-dialog-actions {
+  justify-content: center;
+  margin-top: 16px;
+}
+
+
+button.mat-button.yes-button {
+  background-color: #e53935; 
+  color: #fff; 
+  margin-right: 8px;
+}
+
+button.mat-button.no-button {
+  background-color: #2196f3; 
+  color: #fff; 
+}
+button.mat-button:hover {
+  filter: brightness(0.9);
+}
+
+.mat-dialog-content {
+  text-align: center;
+}
+.mat-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Add a semi-transparent overlay */
+  z-index: 1000; /* Set a high z-index value to make sure it's above other elements */
+  position: fixed; /* Ensure it's positioned relative to the viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

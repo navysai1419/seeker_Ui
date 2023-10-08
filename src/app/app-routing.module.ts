@@ -17,6 +17,7 @@ import { UnsualmovementsComponent } from './unsualmovements/unsualmovements.comp
 import { AnomaliesComponent } from './anomalies/anomalies.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { SourceViewComponent } from './source-view/source-view.component';
+import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
 // import { LoginComponent } from './login/login.component';
 
 
@@ -34,12 +35,13 @@ const routes: Routes = [
   {path:'human-rep',component:HumanRepComponent},
   {path:'gis',component:GisComponent},
   {path:'database-view/:collectionName',component:DatabaseviewComponent},
-  {path:'mergedata',component:MergedataComponent},
+  {path:'mergedata/:collectionName',component:MergedataComponent},
   {path:'gis-analytics',component:GisAnalyticsComponent},
   {path:'unsualmovements',component:UnsualmovementsComponent},
   {path:'anomalies',component:AnomaliesComponent},
   {path:'analytics',component:AnalyticsComponent},
-  {path:'source-view/:collectionName',component:SourceViewComponent}
+  {path:'source-view/:collectionName',component:SourceViewComponent},
+  {path:'deleteCollectionDialog',component:DeleteCollectionDialogComponent}
 
 
 ];

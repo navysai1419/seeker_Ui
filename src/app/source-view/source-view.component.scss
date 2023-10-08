@@ -68,11 +68,11 @@ td{
     align-items: flex-start;
   }
   .table-cell {
-    padding-right: 30px; /* Adjust spacing between text and icons */
+    padding-right: 20px; /* Adjust spacing between text and icons */
   }
   /* Style the table */
   .styled-table {
-    width: 80%; 
+    width: 60%; 
     border-collapse: collapse;
     margin-left: 50px;
   }
@@ -92,14 +92,18 @@ td{
     position: relative; /* Required for button positioning */
   }
   
- 
+  .table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-left: 50px; 
+  }
   
   /* Show icons on hover */
   .styled-table td:hover .bi {
     opacity: 2;
   }
   
-  /* Customize icon colors if needed */
+ 
   .bi-pencil-square {
     font-size: large;
     // margin-left: 20px;
@@ -172,15 +176,15 @@ td{
  
 .file-upload-container {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 8px;
 
   
 }
 
 
 .file-drop-container {
-  width: 400px;
-  height: 300px;
+  width: 300px;
+  height: 200px;
   border: 2px dashed #3498db;
   border-radius: 10px;
   text-align: center;
@@ -249,8 +253,26 @@ td{
 .btn-upload:active {
   transform: scale(0.95); 
 }
+.loading-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #007bff; /* Loading symbol color */
+}
 
+.bi-hourglass-split {
+  font-size: 24px;
+  animation: spin 1s linear infinite; /* Add a spinning animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
   
+
 
   
 

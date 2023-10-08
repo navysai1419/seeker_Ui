@@ -30,8 +30,8 @@ export class ApiService {
   }
 
 
-  getCsvData(collectionName: string) {
-    return this.http.get(`${this.baseUrl}/api/metadata?collectionName=${collectionName}`);
+  getCsvData(collectionName: string): Observable<any[]> {
+    return  this.http.get<any[]>(`${this.baseUrl}/api/metadata?collectionName=${collectionName}`);
   }
   addHeaderToCSV(collectionName: string, newHeader: string): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

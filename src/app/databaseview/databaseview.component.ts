@@ -2,7 +2,8 @@ import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { ApiService } from '../api.service';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType , HttpProgressEvent, HttpResponse } from '@angular/common/http';
+import { NgProgress } from 'ngx-progressbar';
 
 
 @Component({
@@ -24,9 +25,11 @@ export class DatabaseviewComponent implements OnInit {
   showAdd:boolean[]=[];
   newHeader: string = '';
   headerToRemove:string='';
-  oldHeader: string = ''; // Define the old header
+  loading: boolean = false;
+  oldHeader: string = ''; 
+  uploadProgress = 0;
 
-  constructor(private apiService: ApiService,private route: ActivatedRoute,private http: HttpClient,
+  constructor(private apiService: ApiService,private route: ActivatedRoute,private http: HttpClient, private progress: NgProgress,
     private renderer: Renderer2, private el: ElementRef) {}
 
   ngOnInit(): void {
@@ -183,10 +186,13 @@ export class DatabaseviewComponent implements OnInit {
   }
   
  
-  onFileSelected(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.files) {
-      this.selectedFile = inputElement.files[0];
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.selectedFile = file;
+      this.selectedFileName = file.name;
+      console.log('Selected file:', file.name);
     }
   }
   private uploadFiles(files: FileList | null) {
@@ -205,24 +211,32 @@ export class DatabaseviewComponent implements OnInit {
   
   onUpload() {
     if (this.selectedFile) {
-      
+      this.progress.ref().start();
+      this.loading = true;
+
       this.apiService.uploadFile(this.selectedFile, this.collectionName).subscribe(
-        (response) => {
-          console.log('File uploaded successfully:', response);
-          this.selectedFile = null;
-          this.selectedFileName = '';
+        (event:any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            const percentDone = Math.round((100 * event.loaded) / event.total);
+            this.uploadProgress = percentDone;
+          } else if (event instanceof HttpResponse) {
+            console.log('File uploaded successfully:', event);
+            this.selectedFile = null;
+            this.loading = false;
+            this.progress.ref().complete();
+          }
         },
         (error) => {
           console.error('An error occurred while uploading the file:', error);
           this.selectedFile = null;
-          this.selectedFileName = '';
+          this.loading = false;
+          this.progress.ref().complete();
         }
       );
     } else {
       console.error('No file selected.');
     }
   }
-
   
 }
 

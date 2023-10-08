@@ -3,20 +3,12 @@
         <i class="bi bi-arrow-left-circle-fill"></i></a>Source Data</div>
     <div class="page__content shadow p-3 position-relative">
 <div class="container">
+  <div class="row">
     <div class="section-title ">
-        <h4>guest_2023-02-17</h4>    
+        <h4 *ngIf="collectionName">{{collectionName}}</h4>    
       </div>
-    <div class="right">
-        <span class="bi bi-plus-square-fill" data-toggle="tooltip" data-placement="top" title="Add"></span>
-        <span class="bi bi-trash-fill" data-toggle="tooltip" data-placement="top" title="Delete"></span>
-        <span class="bi bi-pencil-fill" data-toggle="tooltip" data-placement="top" title="Edit"></span>
-        <span class="bi bi-cloud-arrow-up-fill" data-toggle="tooltip" data-placement="top" title="upload"></span>
-        <span class="bi bi-restore-from-trash" data-toggle="tooltip" data-placement="top" title="Restore"></span>
-        <span class="bi bi-save-fill" data-toggle="tooltip" data-placement="top" title="Backup"></span>
-        <span class="bi bi-arrow-clockwise" data-toggle="tooltip" data-placement="top" title="Refresh"></span>
-        
-        
-    </div>
+    <div class="col-md-9">
+      <div class="table-container">
     <table class="styled-table">
         <thead>
           <tr>
@@ -35,9 +27,36 @@
           </tr>
         </tbody>
       </table>
-      
+    </div>
+    </div>
+    <div class="col-md-3
+    
+    ">
+      <div class="file-upload-container">
+        <div class="file-drop-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+          <p>Drag and drop a CSV file here</p>
+          <p>or</p>
+          <label class="upload-icon">
+            <input type="file" (change)="onFileSelected($event)" hidden #fileInput />
+            <span class="bi bi-cloud-upload"></span>
+          </label>
+          <button
+          type="button"
+          (click)="onUpload()"
+          class="btn btn-outline-primary active btn-upload">Upload</button>
+          <div *ngIf="loading" class="loading-symbol">
+            <i class="bi bi-hourglass-split"></i> Uploading...
+          </div>
+          <p class="file-name" *ngIf="selectedFileName">{{selectedFileName}}</p>
+        </div>
+       
+      </div>
+    </div>
         
 </div>
+</div>
+
+
 
 </div>
 </div>
