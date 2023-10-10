@@ -16,6 +16,7 @@ export class GisComponent  implements OnInit{
   positionDropdowns: Array<{ selectedInputType: string, inputValue: string }> = [];
 
   subscreenHeight: number = 500; 
+  public coordinates: { lat: number, lng: number }[] = [];
 
   selectedInputTypeCommute: string = 'none';
   inputValueCommute: string = '';
@@ -27,9 +28,10 @@ export class GisComponent  implements OnInit{
   showSidebar: boolean = true;
   sidebarMinimized: boolean = false; 
   constructor(private router: Router,private sharedService: SharedService) {
-    // Initialize the properties in the constructor
+   
     this.lat = 0;
     this.lng = 0;
+    this.coordinates = []; 
   }
 
   ngOnInit() {
@@ -37,6 +39,12 @@ export class GisComponent  implements OnInit{
       navigator.geolocation.getCurrentPosition((position) => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
+        this.coordinates = [
+        { lat: this.lat, lng: this.lng },
+        { lat: 17.450333, lng: 78.381052 },
+        { lat: 17.4643, lng: 78.3756 },
+        { lat: 17.4526, lng: 78.3783 }
+      ];
       });
     }
   }

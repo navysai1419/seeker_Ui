@@ -15,18 +15,26 @@
             <tr>Column names</tr>
         </th>
          <tbody>
-          <tr *ngFor="let data of data let i = index" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)">
-            <td>{{ data }}
+          <tr *ngFor="let data of data let i = index" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)" >
+            <td>
+              <ng-container *ngIf="editedColumn !== i.toString(); else editColumn">
+          {{ data }}
+        </ng-container>
+        <ng-template #editColumn>
+          <input  [(ngModel)]="data" />
+          <button class="btn btn-success" (click)="saveEditedColumn(i)">Save</button>
+        </ng-template>
                 <div class="icon-container">
-                    <span class="bi bi-plus-square" *ngIf="showAdd[i]"(mouseleave)="unhighlightIcon(i)" (click)="addRow(i)"  data-toggle="tooltip" data-placement="top" title="Add"></span>
-                <span class="bi bi-pencil-square" *ngIf="showEdit[i]" (click)="editRow(data)"  data-toggle="tooltip" data-placement="top" title="Edit"></span>
-                <span class="bi bi-dash-square" *ngIf="showDelete[i]" (click)="deleteRow(i)"  data-toggle="tooltip" data-placement="top" title="Delete"></span>
+                    <span class="bi bi-plus-square" *ngIf="showAdd[i]"(mouseleave)="unhighlightIcon(i)" (click)="addRow(data)"  data-toggle="tooltip" data-placement="top" title="Add"></span>
+                <span class="bi bi-pencil-square" *ngIf="showEdit[i]"(mouseleave)="unhighlightIcon(i)" (click)="editRow(data,i)"  data-toggle="tooltip" data-placement="top" title="Edit"></span>
+                <span class="bi bi-dash-square" *ngIf="showDelete[i]" (mouseleave)="unhighlightIcon(i)" (click)="deleteRow(data)"  data-toggle="tooltip" data-placement="top" title="Delete"></span>
                 
                 </div>
                 <div class="text-content"></div>
 
             </td>
           </tr>
+          
         </tbody>
       </table>
     </div>
@@ -54,7 +62,7 @@
           
       </div>
       <div>
-        <h2>Add Header and Row</h2>
+        <!-- <h2>Add Header and Row</h2>
       
         <div class="form-group">
           <label for="newHeader">New Header:</label>
@@ -63,7 +71,7 @@
       
         <button class="btn btn-primary" (click)="addHeaderAndRow()">Add Header and Row</button>
       
-        <!-- Display success or error messages -->
+       
         <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
         <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
       </div>
@@ -104,7 +112,7 @@
     </form>
     <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  </div>
+  </div> -->
 
 
 

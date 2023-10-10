@@ -33,6 +33,8 @@ export class ApiService {
   getCsvData(collectionName: string): Observable<any[]> {
     return  this.http.get<any[]>(`${this.baseUrl}/api/metadata?collectionName=${collectionName}`);
   }
+
+
   addHeaderToCSV(collectionName: string, newHeader: string): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const params = new HttpParams().set('newHeader', newHeader); // Include the newHeader parameter
@@ -43,6 +45,8 @@ export class ApiService {
       { headers, params }
     );
   }
+
+  
 removeHeaderFromCSV(collectionName: string, headerToRemove: string): Observable<any> {
   const url = `${this.baseUrl}/api/remove-header/${collectionName}?headerToRemove=${headerToRemove}`;
 

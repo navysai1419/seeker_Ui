@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { ApiService } from '../api.service';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpEventType , HttpProgressEvent, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEventType , HttpProgressEvent, HttpResponse } from '@angular/common/http';
 import { NgProgress } from 'ngx-progressbar';
 
 
@@ -13,11 +13,14 @@ import { NgProgress } from 'ngx-progressbar';
 })
 export class DatabaseviewComponent implements OnInit {
   collectionName: string = '';
-  headers: string[] = [];
+  editedColumn: string = '';
   data: any[] = [];
+  newColumnName: string ='';
+  selectedHeader: string | null = null;
   selectedFileName: string | undefined;
   selectedFile: File | null = null;
   selectedCollection = '';
+  originalColumnNames: string[] = this.data.slice(); 
   errorMessage: string = '';
   successMessage:string = '';
   showEdit: boolean[] = [];
@@ -28,8 +31,8 @@ export class DatabaseviewComponent implements OnInit {
   loading: boolean = false;
   oldHeader: string = ''; 
   uploadProgress = 0;
-
-  constructor(private apiService: ApiService,private route: ActivatedRoute,private http: HttpClient, private progress: NgProgress,
+  isEditing: boolean[] = [];
+  constructor(private apiService: ApiService,private route: ActivatedRoute,private http: HttpClient,private progress: NgProgress,
     private renderer: Renderer2, private el: ElementRef) {}
 
   ngOnInit(): void {
@@ -92,21 +95,115 @@ export class DatabaseviewComponent implements OnInit {
     }
   }
 
-  editRow(data: any): void {
-    // Implement edit row logic here
-    console.log('Editing row:', data);
+  // editRow(data: any): void {
+  //   // Implement edit row logic here
+  //   console.log('Editing row:', data);
+  // }
+
+  // deleteRow(index: number): void {
+  //   // Implement delete row logic here
+  //   console.log('Deleting row at index:', index);
+  //   this.data.splice(index, 1);
+  // }
+
+  // addRow(index:number): void {
+    
+  //   const newRow = { id: this.data.length + 1, name: `Row ${this.data.length + 1}` };
+  //   this.data.push(newRow);
+  // }
+
+  addRow(newHeader:string): void {
+    if (!this.newHeader) {
+      this.errorMessage = 'New header is required.',newHeader;
+      return;
+    }
+  
+    
+    this.apiService.addHeaderToCSV(this.collectionName, this.newHeader)
+      .subscribe(
+        (response) => {
+          this.successMessage = 'Header added successfully';
+          this.errorMessage = '';
+          this.newHeader = '';
+  
+          const newRow = { id: this.data.length + 1, [this.newHeader]: null };
+          this.data.push(newRow);
+        },
+        (error) => {
+          this.errorMessage = 'Error adding header: ' + error.message;
+          this.successMessage = '';
+        }
+      );
+  }
+  
+
+  deleteRow(headerName: string): void {
+    if (!headerName) {
+      console.error('Header name is undefined.', headerName);
+      return; 
+    }
+  
+    const confirmation = confirm(`Are you sure you want to delete the row with header name "${headerName}"?`);
+  
+    if (!confirmation) {
+      return; 
+    }
+  
+    
+    this.apiService.removeHeaderFromCSV(this.collectionName, headerName)
+      .subscribe(
+        (response) => {
+          console.log('Row deleted successfully', response);
+          
+          const indexToDelete = this.data.findIndex((row) => row.headerName === headerName);
+          if (indexToDelete !== -1) {
+            this.data.splice(indexToDelete, 1); 
+            console.log('Header removed successfully', response);
+            
+          }
+          window.location.href = window.location.href;
+        },
+        (error) => {
+          console.error('Error deleting row', error);
+          
+
+        }
+      );
+  }
+  
+  
+  editRow(data: string, index: number) {
+    this.editedColumn = data;
+  
   }
 
-  deleteRow(index: number): void {
-    // Implement delete row logic here
-    console.log('Deleting row at index:', index);
-    this.data.splice(index, 1);
-  }
+  saveEditedColumn(index: number) {
+    if (!this.editedColumn) {
+      return;
+    }
 
-  addRow(index:number): void {
-    // Implement add row logic here
-    const newRow = { id: this.data.length + 1, name: `Row ${this.data.length + 1}` };
-    this.data.push(newRow);
+    const originalColumnName = this.data[index]; 
+    if (this.editedColumn === originalColumnName) {
+      
+      this.editedColumn = ''; 
+      return;
+    }
+
+   
+    this.data[index] = this.editedColumn;
+
+   
+    this.apiService.editHeaderInCSV(this.collectionName, originalColumnName, this.editedColumn)
+      .subscribe(
+        (response) => {
+          console.log('Column name updated successfully', response);
+          this.editedColumn = ''; 
+        },
+        (error) => {
+          console.error('Error updating column name', error);
+         
+        }
+      );
   }
   
 
@@ -140,30 +237,30 @@ export class DatabaseviewComponent implements OnInit {
         }
       );
   }
-  addHeaderAndRow(): void {
-    if (!this.newHeader) {
-      this.errorMessage = 'New header is required.';
-      return;
-    }
+  // addHeaderAndRow(): void {
+  //   if (!this.newHeader) {
+  //     this.errorMessage = 'New header is required.';
+  //     return;
+  //   }
   
-    // First, add the new header
-    this.apiService.addHeaderToCSV(this.collectionName, this.newHeader)
-      .subscribe(
-        (response) => {
-          this.successMessage = 'Header added successfully';
-          this.errorMessage = '';
-          this.newHeader = '';
+  //   // First, add the new header
+  //   this.apiService.addHeaderToCSV(this.collectionName, this.newHeader)
+  //     .subscribe(
+  //       (response) => {
+  //         this.successMessage = 'Header added successfully';
+  //         this.errorMessage = '';
+  //         this.newHeader = '';
   
-          // After adding the header, add a new row
-          const newRow = { id: this.data.length + 1, [this.newHeader]: null };
-          this.data.push(newRow);
-        },
-        (error) => {
-          this.errorMessage = 'Error adding header: ' + error.message;
-          this.successMessage = '';
-        }
-      );
-  }
+  //         // After adding the header, add a new row
+  //         const newRow = { id: this.data.length + 1, [this.newHeader]: null };
+  //         this.data.push(newRow);
+  //       },
+  //       (error) => {
+  //         this.errorMessage = 'Error adding header: ' + error.message;
+  //         this.successMessage = '';
+  //       }
+  //     );
+  // }
 
 
   onDrop(event: DragEvent) {
@@ -232,10 +329,12 @@ export class DatabaseviewComponent implements OnInit {
           this.loading = false;
           this.progress.ref().complete();
         }
+        
       );
     } else {
       console.error('No file selected.');
     }
+    window.location.reload();
   }
   
 }

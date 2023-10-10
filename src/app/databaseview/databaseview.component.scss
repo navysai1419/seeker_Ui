@@ -1,169 +1,158 @@
-@import "../home/home.component.scss";
+@import "../scss/scss.component.scss";
 
-
-tr{
-    font-size: 20px;
+tr {
+  font-size: 20px;
 }
 
-th{
-    font-size: 18px;
+th {
+  font-size: 18px;
 }
-td{
-    font-size: 16px;
+
+td {
+  font-size: 16px;
 }
+
 .icon-container {
-    display: inline-block;
-    position: relative;
+  display: inline-block;
+  position: relative;
 }
 
 .bi {
-    
-    color: #07325f;
-    cursor: pointer;
+  color: #07325f;
+  cursor: pointer;
 }
 
 .bi[data-toggle="tooltip"] {
-    cursor: help;
+  cursor: help;
 }
-.d-flex  a i{
-    color: rgb(246, 246, 252);
-    font-size: 20px;
-    padding-right: 25px;
-  }
-  
 
-  
-  /* Style the table */
-  .styled-table {
-    margin-top: 15px;
-    width: 80%; 
-    border-collapse: collapse;
-    margin-left: 50px;
+.d-flex a i {
+  color: rgb(246, 246, 252);
+  font-size: 20px;
+  padding-right: 25px;
+}
+
+/* Style the table */
+.styled-table {
+  margin-top: 15px;
+  width: 80%;
+  border-collapse: collapse;
+  margin-left: 50px;
+}
+
+.button-container {
+  padding-right: 10px; /* Add some spacing between buttons and table */
+}
+
+.styled-table th {
+  background-color: #f2f2f2;
+  font-size: 16px;
+  text-align: center;
+  padding: 10px;
+}
+
+.styled-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  position: relative; /* Required for button positioning */
+}
+
+/* Show icons on hover */
+.styled-table td:hover .bi {
+  opacity: 2;
+}
+
+/* Customize icon colors if needed */
+// .bi {
+//   font-size: large;
+//   color: #07325f;
+//   cursor: pointer;
+//   transition: opacity 0.2s ease-in-out;
+//   display: inline-block;
+//   opacity: 0;
+// }
+
+.bi[data-toggle="tooltip"] {
+  cursor: help;
+}
+
+/* Individual icon styles */
+.bi-plus-square,
+.bi-dash-square,
+.bi-pencil-square {
+  margin-left: 350px;
+  color: #cfd1d1;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  display: inline-block;
+  opacity: 0;
+
+}
+
+.bi-plus-square:hover,
+.bi-dash-square:hover,
+.bi-pencil-square:hover {
+  color: #1d098f;
+}
+
+.loading-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #007bff; /* Loading symbol color */
+}
+
+.bi-hourglass-split {
+  font-size: 24px;
+  animation: spin 1s linear infinite; /* Add a spinning animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  .button-container {
-    padding-right: 10px; /* Add some spacing between buttons and table */
+  100% {
+    transform: rotate(360deg);
   }
-  .styled-table th {
-    background-color: #f2f2f2;
-    font-size: 16px ;
-    text-align: center;
-    padding: 10px;
-  }
-  
-  .styled-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    position: relative; /* Required for button positioning */
-  }
-  
- 
-  
-  /* Show icons on hover */
-  .styled-table td:hover .bi {
-    opacity: 2;
-  }
-  
-  /* Customize icon colors if needed */
-  .bi {
-    font-size: large;
-    color: #07325f;
-    cursor: pointer;
-    transition: opacity 0.2s ease-in-out;
-    display: inline-block;
-    opacity: 0;
-  }
-  
-  .bi[data-toggle="tooltip"] {
-    cursor: help;
-  }
-  
-  /* Individual icon styles */
-  .bi-plus-square,
-  .bi-dash-square,
-  .bi-pencil-square {
-    margin-left: 430px;
-  }
-  
-  .bi-plus-square:hover,
-  .bi-dash-square:hover,
-  .bi-pencil-square:hover {
-    color: #1d098f;
-  }
-  
-  /* Style for the cloud-upload icon */
-  .bi.bi-cloud-upload {
-    font-size: 32px;
-    color: #3498db;
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .bi.bi-cloud-upload:hover {
-    color: #1d098f;
-    transform: scale(1.05);
-  }
-  
-  /* Style for the "Upload" button */
- 
-  .btn-upload:active {
-    transform: scale(0.95);
-  }
-  
-  /* Style for the loading symbol */
-  .loading-symbol {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    font-size: 18px;
-    color: #007bff; /* Loading symbol color */
-  }
-  
-  .bi-hourglass-split {
-    font-size: 24px;
-    animation: spin 1s linear infinite; /* Add a spinning animation */
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  /* Add some spacing between icons */
-  .styled-table td .bi:not(:first-child) {
-    margin-left: 10px;
-  }
-  
-  /* Style the button container */
-  .button-container {
-    width: 30%; /* Adjust the width as needed */
-    padding: 10px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-  }
-  .text-content {
-    flex-grow: 1; 
-    overflow: hidden; /* Hide overflowing text */
-    white-space: nowrap; /* Prevent text from wrapping */
-    text-overflow: ellipsis; /* Show ellipsis (...) for long text */
-  }
-  .icon-container {
-    width: 100px; 
-    display: flex;
-    justify-content: space-between; 
-  }
-  .icon-container .highlighted {
-    border: 2px solid #8c8e8e; 
-  }
- 
- 
+}
+
+/* Add some spacing between icons */
+.styled-table td .bi:not(:first-child) {
+  margin-left: 10px;
+}
+
+/* Style the button container */
+.button-container {
+  width: 30%; /* Adjust the width as needed */
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.text-content {
+  flex-grow: 1;
+  overflow: hidden; /* Hide overflowing text */
+  white-space: nowrap; /* Prevent text from wrapping */
+  text-overflow: ellipsis; /* Show ellipsis (...) for long text */
+}
+
+.icon-container {
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-container .highlighted {
+  border: 2px solid #eff1f1;
+}
+
 .file-upload-container {
   text-align: center;
   margin-top: 20px;
-
-  
 }
-
 
 .file-drop-container {
   width: 400px;
@@ -178,7 +167,6 @@ td{
   flex-direction: column;
   justify-content: center;
   align-items: center;
- 
 }
 
 .file-drop-container p {
@@ -196,8 +184,9 @@ td{
 }
 
 .upload-icon span {
-  font-size: 32px; /* Adjust the icon size as needed */
+  font-size: 32px; 
   margin-bottom: 5px;
+  color: #3498db;
 }
 
 /* Styling for the file name display */
@@ -205,39 +194,32 @@ td{
   margin-top: 10px;
   font-weight: bold;
 }
-.bi.bi-cloud-upload {
-  font-size: 32px; /* Adjust the icon size as needed */
-  color: #3498db; /* Set the desired icon color */
-  cursor: pointer; /* Add a pointer cursor for interaction */
-}
 
-/* Optional: Add hover effect if desired */
+
+
+
 .bi.bi-cloud-upload:hover {
-  color: #1d098f; /* Change color on hover */
+  color: #1d098f; 
 }
 
 /* Style for the "Upload" button */
 .btn-upload {
-  background-color: #3498db; 
-  color: #fff; 
-  border: none; 
-  padding: 10px 20px; 
-  font-size: 16px; 
-  cursor: pointer; 
-  border-radius: 4px; 
-  transition: background-color 0.3s, transform 0.2s; 
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn-upload:hover {
-  background-color: #1d098f; 
-  transform: scale(1.05); 
+  background-color: #1d098f;
+  transform: scale(1.05);
 }
 
 .btn-upload:active {
-  transform: scale(0.95); 
+  transform: scale(0.95);
 }
 
-
-  
-
-  

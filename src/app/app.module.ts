@@ -43,6 +43,7 @@ import { SearchComponent } from './search/search.component';
 import { MapComponent } from './map/map.component';
 import { environment } from './environments/environment';
 import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
+import { ScssComponent } from './scss/scss.component';
 // import {} from 'googlemaps';
 
 @NgModule({
@@ -73,6 +74,7 @@ import { DeleteCollectionDialogComponent } from './delete-collection-dialog/dele
     SearchComponent,
     MapComponent,
     DeleteCollectionDialogComponent,
+    ScssComponent,
    
   ],
   imports: [
