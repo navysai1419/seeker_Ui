@@ -14,6 +14,7 @@ interface SideNavToggle{
 export class AppComponent implements OnInit {
   title = 'admin-panel-layout';
   isSideNavCollapsed=false;
+  notificationMessage: string = '';
   subscreenVisible: boolean = true;
   screenWidth=0;
   sideBarOpen = true;
@@ -37,4 +38,7 @@ export class AppComponent implements OnInit {
 
   }
  
+  showAlertMessage(message: string) {
+    this.notificationMessage = message;
+  }
 }

@@ -1,15 +1,15 @@
 @import "../scss/scss.component.scss";
 
 tr {
-  font-size: 20px;
+  font-size: 12px;
 }
 
 th {
-  font-size: 18px;
+  font-size: 12px;
 }
 
 td {
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .icon-container {
@@ -46,7 +46,7 @@ td {
 
 .styled-table th {
   background-color: #f2f2f2;
-  font-size: 16px;
+  font-size: 12px;
   text-align: center;
   padding: 10px;
 }
@@ -132,12 +132,7 @@ td {
   justify-content: flex-end;
 }
 
-.text-content {
-  flex-grow: 1;
-  overflow: hidden; /* Hide overflowing text */
-  white-space: nowrap; /* Prevent text from wrapping */
-  text-overflow: ellipsis; /* Show ellipsis (...) for long text */
-}
+
 
 .icon-container {
   width: 100px;

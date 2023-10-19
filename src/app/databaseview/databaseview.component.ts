@@ -14,19 +14,22 @@ import { NgProgress } from 'ngx-progressbar';
 export class DatabaseviewComponent implements OnInit {
   collectionName: string = '';
   editedColumn: string = '';
+  showEdit: boolean[] = [];
+  notificationMessage: string = '';
   data: any[] = [];
   newColumnName: string ='';
   selectedHeader: string | null = null;
-  selectedFileName: string | undefined;
+  selectedFileName: string | null=null;
   selectedFile: File | null = null;
   selectedCollection = '';
   originalColumnNames: string[] = this.data.slice(); 
   errorMessage: string = '';
   successMessage:string = '';
-  showEdit: boolean[] = [];
+  newHeader: string = ''; // New header
+  newDataRow: any = {}; // New row data
+  editMode: boolean[] = []; 
   showDelete: boolean[] = [];
   showAdd:boolean[]=[];
-  newHeader: string = '';
   headerToRemove:string='';
   loading: boolean = false;
   oldHeader: string = ''; 
@@ -100,23 +103,35 @@ export class DatabaseviewComponent implements OnInit {
   //   console.log('Editing row:', data);
   // }
 
-  // deleteRow(index: number): void {
-  //   // Implement delete row logic here
-  //   console.log('Deleting row at index:', index);
-  //   this.data.splice(index, 1);
-  // }
 
-  // addRow(index:number): void {
-    
-  //   const newRow = { id: this.data.length + 1, name: `Row ${this.data.length + 1}` };
-  //   this.data.push(newRow);
-  // }
+ 
+  saveDataToMongoDB(): void {
+    this.apiService.addHeaderToCSV(this.collectionName, this.newHeader).subscribe(
+      (response) => {
+        if (response === 'Header added successfully') {
+          this.successMessage = 'Header added successfully';
+          this.newHeader = '';
+        } else {
+          this.errorMessage = 'Error adding header: Unexpected response from the server';
+        }
+      },
+      (error) => {
+        this.errorMessage = 'Error adding header: ' + error.message;
+        this.successMessage = '';
+      }
+    );
+  }
 
-  addRow(newHeader:string): void {
-    if (!this.newHeader) {
-      this.errorMessage = 'New header is required.',newHeader;
-      return;
-    }
+
+  addRow(index: number): void {
+    const newRow = { name: `Row ${this.data.length + 1}`, isEditable: true };
+    this.data.push(newRow);
+  }
+  
+  
+
+  saveAddRow(index:number): void {
+   
   
     
     this.apiService.addHeaderToCSV(this.collectionName, this.newHeader)
@@ -172,54 +187,50 @@ export class DatabaseviewComponent implements OnInit {
   }
   
   
-  editRow(data: string, index: number) {
-    this.editedColumn = data;
-  
+  editRow(rowdata: string) {
+    this.editedColumn = rowdata;
+    // Additional logic for handling the edit, if needed
   }
 
   saveEditedColumn(index: number) {
     if (!this.editedColumn) {
+      // Don't save if the edited column is empty
       return;
     }
-
+  
     const originalColumnName = this.data[index]; 
+  
     if (this.editedColumn === originalColumnName) {
-      
+      // If the edited column is the same as the original, no need to save
       this.editedColumn = ''; 
       return;
     }
-
-   
-    this.data[index] = this.editedColumn;
-
-   
-    this.apiService.editHeaderInCSV(this.collectionName, originalColumnName, this.editedColumn)
-      .subscribe(
-        (response) => {
-          console.log('Column name updated successfully', response);
-          this.editedColumn = ''; 
-        },
-        (error) => {
-          console.error('Error updating column name', error);
-         
-        }
-      );
-  }
   
-
-  removeHeader() {
-    this.apiService.removeHeaderFromCSV(this.collectionName, this.headerToRemove)
+    // Update the data array with the edited column name
+    this.data[index] = this.editedColumn;
+  
+    this.apiService.editHeaderInCSV(this.collectionName, originalColumnName, this.editedColumn)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error updating header', error);
+          if (error.status === 500) {
+            this.errorMessage = 'Server error: Please check the server logs for details.';
+          } else {
+            this.errorMessage = 'Error updating header: ' + error.message;
+          }
+          throw error;
+        })
+      )
       .subscribe(
         (response) => {
-          console.log('Header removed successfully', response);
-          // Handle success or update UI as needed
-        },
-        (error) => {
-          console.error('Error removing header', error);
-          // Handle error or display an error message
+          console.log('Header updated successfully', response);
+          this.successMessage = 'Header updated successfully';
+          this.editedColumn = ''; // Clear the editedColumn variable on success
         }
       );
   }
+    
+  
   editHeader() {
     this.apiService.editHeaderInCSV(this.collectionName, this.oldHeader, this.newHeader)
     .pipe(
@@ -237,26 +248,48 @@ export class DatabaseviewComponent implements OnInit {
         }
       );
   }
-  // addHeaderAndRow(): void {
-  //   if (!this.newHeader) {
-  //     this.errorMessage = 'New header is required.';
-  //     return;
-  //   }
+ 
+  addHeaderAndRow(newHeader: string, index: number): void {
+   
+    this.apiService.addHeaderToCSV(this.collectionName, newHeader)
+      .subscribe(
+        (response) => {
+          this.successMessage = 'Header added successfully';
+          this.errorMessage = '';
+          this.newHeader = '';
   
-  //   // First, add the new header
-  //   this.apiService.addHeaderToCSV(this.collectionName, this.newHeader)
+          
+          const newRow = { id: this.data.length + 1 };
+          
+          // newRow[this.newHeader] = null; 
+          this.data.push(newRow);
+          this.editMode.push(true); 
+        },
+        (error) => {
+          this.errorMessage = 'Error adding header: ' + error.message;
+          this.successMessage = '';
+        }
+      );
+  }
+  toggleEditMode(index: number): void {
+    this.editMode[index] = !this.editMode[index];
+  }
+
+  // saveRow(index: number): void {
+  //   // Send a request to save the edited row data
+  //   this.apiService.updateRowInCSV(this.collectionName, this.data[index])
   //     .subscribe(
   //       (response) => {
-  //         this.successMessage = 'Header added successfully';
+  //         // Data saved successfully
+  //         console.log('Row saved:', response);
+  //         this.successMessage = 'Row saved successfully';
   //         this.errorMessage = '';
-  //         this.newHeader = '';
-  
-  //         // After adding the header, add a new row
-  //         const newRow = { id: this.data.length + 1, [this.newHeader]: null };
-  //         this.data.push(newRow);
+  //         this.editMode[index] = false; // Disable edit mode after saving
   //       },
   //       (error) => {
-  //         this.errorMessage = 'Error adding header: ' + error.message;
+  //         // Handle errors
+  //         console.error('Error saving row:', error);
+  //         this.errorMessage = 'Error saving row: ' + error.message;
   //         this.successMessage = '';
   //       }
   //     );
@@ -265,24 +298,22 @@ export class DatabaseviewComponent implements OnInit {
 
   onDrop(event: DragEvent) {
     event.preventDefault();
-    if (event.dataTransfer) {
+    if (event.dataTransfer && event.dataTransfer.files) {
       this.uploadFiles(event.dataTransfer.files);
     }
   }
-  
+
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
-  
+
   triggerFileInput() {
-    // Trigger the hidden file input element
     const fileInput = document.querySelector<HTMLInputElement>('#fileInput');
     if (fileInput) {
       fileInput.click();
     }
   }
-  
- 
+
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
 
@@ -292,50 +323,110 @@ export class DatabaseviewComponent implements OnInit {
       console.log('Selected file:', file.name);
     }
   }
+
   private uploadFiles(files: FileList | null) {
     if (files && files.length > 0) {
       const file = files[0];
       if (file.type === 'text/csv') {
-      
-        this.selectedFile = file; // Store the selected file
+        this.selectedFile = file;
         this.selectedFileName = file.name;
         console.log('Uploading CSV file:', file);
+
+        // Call your upload function
+        this.uploadFile();
       } else {
         console.error('Invalid file type. Please select a CSV file.');
       }
     }
   }
-  
-  onUpload() {
-    if (this.selectedFile) {
-      this.progress.ref().start();
-      this.loading = true;
 
+  uploadFile() {
+    if (this.selectedFile) {
+      this.loading = true;
       this.apiService.uploadFile(this.selectedFile, this.collectionName).subscribe(
-        (event:any) => {
+        (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             const percentDone = Math.round((100 * event.loaded) / event.total);
             this.uploadProgress = percentDone;
           } else if (event instanceof HttpResponse) {
             console.log('File uploaded successfully:', event);
-            this.selectedFile = null;
-            this.loading = false;
-            this.progress.ref().complete();
+
+            // Perform any necessary processing after successful upload
+            const recordCount = event.body.recordCount; // Adjust this line to match your API response
+
+            alert(`Successfully uploaded with record count: ${recordCount}`);
+
+            // Clear the message after a few seconds (adjust as needed)
+            setTimeout(() => {
+              this.selectedFile = null;
+              this.selectedFileName = null;
+              this.uploadProgress = 0;
+              this.loading = false;
+            }, 5000);
           }
         },
         (error) => {
           console.error('An error occurred while uploading the file:', error);
           this.selectedFile = null;
           this.loading = false;
-          this.progress.ref().complete();
+          this.uploadProgress = 0;
         }
-        
       );
     } else {
       console.error('No file selected.');
     }
-    window.location.reload();
   }
+  // onUpload() {
+  //   if (this.selectedFile) {
+  //     this.progress.ref().start();
+  //     this.loading = true;
+  
+  //     this.apiService.uploadFile(this.selectedFile, this.collectionName).subscribe(
+  //       (event: any) => {
+  //         if (event.type === HttpEventType.UploadProgress) {
+  //           const percentDone = Math.round((100 * event.loaded) / event.total);
+  //           this.uploadProgress = percentDone;
+  //           const recordCount = event.body.recordCount; 
+  
+           
+  //           this.notificationMessage = `Successfully uploaded with record count: ${recordCount}`;
+  
+  //           setTimeout(() => {
+  //             this.notificationMessage = '';
+  //           }, 5000);
+
+  //         } else if (event instanceof HttpResponse) {
+  //           console.log('File uploaded successfully:', event);
+  
+           
+  //           const recordCount = event.body.recordCount; 
+  
+           
+  //           this.notificationMessage = `Successfully uploaded with record count: ${recordCount}`;
+  
+  //           setTimeout(() => {
+  //             this.notificationMessage = '';
+  //           }, 5000);
+  
+  //           this.selectedFile = null;
+  //           this.loading = false;
+  //           this.progress.ref().complete();
+  
+  //           // Reload the page
+  //           location.reload();
+  //         }
+  //       },
+  //       (error) => {
+  //         console.error('An error occurred while uploading the file:', error);
+  //         this.selectedFile = null;
+  //         this.loading = false;
+  //         this.progress.ref().complete();
+  //       }
+  //     );
+  //   } else {
+  //     console.error('No file selected.');
+  //   }
+  // }
   
 }
 

@@ -44,12 +44,15 @@ import { MapComponent } from './map/map.component';
 import { environment } from './environments/environment';
 import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
 import { ScssComponent } from './scss/scss.component';
+import { ObjectIdPipe } from './objectId.pipe';
+import { NotificationComponent } from './notification/notification.component';
 // import {} from 'googlemaps';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    ObjectIdPipe,
     DashboardComponent,
     SidenavComponent,
     HomeComponent,
@@ -75,6 +78,7 @@ import { ScssComponent } from './scss/scss.component';
     MapComponent,
     DeleteCollectionDialogComponent,
     ScssComponent,
+    NotificationComponent,
    
   ],
   imports: [

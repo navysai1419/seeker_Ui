@@ -2,7 +2,6 @@
     <div class="d-flex page__box p-3 mt-2"><a  routerLinkActive="list-item-active" routerLink="/databases">
         <i class="bi bi-arrow-left-circle-fill"></i></a>Admin</div>
     <div class="page__content shadow p-3 position-relative">
-<div class="container">
 <div class="row">
     <div class="section-title ">
         <h3 *ngIf="collectionName">{{collectionName}}</h3>    
@@ -15,53 +14,64 @@
             <tr>Column names</tr>
         </th>
          <tbody>
-          <tr *ngFor="let data of data let i = index" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)" >
+          <tr *ngFor="let rowdata of data; let i = index" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)" >
             <td>
-              <ng-container *ngIf="editedColumn !== i.toString(); else editColumn">
-          {{ data }}
-        </ng-container>
-        <ng-template #editColumn>
-          <input  [(ngModel)]="data" />
-          <button class="btn btn-success" (click)="saveEditedColumn(i)">Save</button>
-        </ng-template>
+              <ng-container *ngIf="editedColumn !== rowdata; else editColumn">
+                {{ rowdata }}
+              </ng-container>
+              <ng-template #editColumn>
+                <input [(ngModel)]="editedColumn"  *ngIf="showAdd[i]"/>
+                <button class="btn btn-success" (click)="saveEditedColumn(i)">Save</button>
+              </ng-template>
+                  
                 <div class="icon-container">
-                    <span class="bi bi-plus-square" *ngIf="showAdd[i]"(mouseleave)="unhighlightIcon(i)" (click)="addRow(data)"  data-toggle="tooltip" data-placement="top" title="Add"></span>
-                <span class="bi bi-pencil-square" *ngIf="showEdit[i]"(mouseleave)="unhighlightIcon(i)" (click)="editRow(data,i)"  data-toggle="tooltip" data-placement="top" title="Edit"></span>
-                <span class="bi bi-dash-square" *ngIf="showDelete[i]" (mouseleave)="unhighlightIcon(i)" (click)="deleteRow(data)"  data-toggle="tooltip" data-placement="top" title="Delete"></span>
+                    <span class="bi bi-plus-square" *ngIf="showAdd[i]"(mouseleave)="unhighlightIcon(i)"  (click)="addHeaderAndRow(newHeader, i)" data-toggle="tooltip" data-placement="top" title="Add"></span>
+                <span class="bi bi-pencil-square" *ngIf="showEdit[i]"(mouseleave)="unhighlightIcon(i)" (click)="editRow(rowdata)"  data-toggle="tooltip" data-placement="top" title="Edit"></span>
+                <span class="bi bi-dash-square" *ngIf="showDelete[i]" (mouseleave)="unhighlightIcon(i)" (click)="deleteRow(rowdata)"  data-toggle="tooltip" data-placement="top" title="Delete"></span>
                 
                 </div>
-                <div class="text-content"></div>
+                
 
             </td>
           </tr>
           
         </tbody>
       </table>
+      
     </div>
-      <div class="col-md-5 ">
-        <div class="file-upload-container">
-            <div class="file-drop-container" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-              <p>Drag and drop a CSV file here</p>
-              <p>or</p>
-              <label class="upload-icon">
-                <input type="file" (change)="onFileSelected($event)" hidden #fileInput />
-                <span class="bi bi-cloud-upload"></span>
-              </label>
-              <button
-              type="button"
-              (click)="onUpload()"
-              class="btn btn-outline-primary active btn-upload">Upload</button>
-              <div *ngIf="loading" class="loading-symbol">
-                <i class="bi bi-hourglass-split"></i> Uploading...
-              </div>
-              <p class="file-name" *ngIf="selectedFileName">{{selectedFileName}}</p>
-            </div>
-           
+    <div class="col-md-5">
+      <div class="file-upload-container">
+        <div
+          class="file-drop-container"
+          (drop)="onDrop($event)"
+          (dragover)="onDragOver($event)"
+          draggable="true">
+          <p>Drag and drop a CSV file here</p>
+          <p>or</p>
+          <label class="upload-icon">
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              hidden
+              #fileInput
+            />
+            <span class="bi bi-cloud-upload"></span>
+          </label>
+          <button
+            type="button"
+            (click)="uploadFile()"
+            class="btn btn-outline-primary active btn-upload"
+          >
+            Upload
+          </button>
+          <div *ngIf="loading" class="loading-symbol">
+            <i class="bi bi-hourglass-split"></i> Uploading...
           </div>
-          
-          
+          <p class="file-name" *ngIf="selectedFileName">{{ selectedFileName }}</p>
+        </div>
       </div>
-      <div>
+    </div>      
+      </div>
         <!-- <h2>Add Header and Row</h2>
       
         <div class="form-group">
@@ -114,7 +124,6 @@
     <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
   </div> -->
 
-
-
+ 
     </div>
 </div>

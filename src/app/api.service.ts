@@ -37,15 +37,23 @@ export class ApiService {
 
   addHeaderToCSV(collectionName: string, newHeader: string): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const params = new HttpParams().set('newHeader', newHeader); // Include the newHeader parameter
+    // const params = new HttpParams().set('newHeader', newHeader); // Include the newHeader parameter
+    const body = { newHeader };
 
     return this.http.put<string>(
       `${this.baseUrl}/api/add-header/${collectionName}`,
-      null,
-      { headers, params }
+      body,
+      { headers}
     );
   }
-
+  deleteDocumentByIndex(collectionName: string, index: number): Observable<string> {
+    const url = `${this.baseUrl}/api/delete-row-by-index/${collectionName}/${index}`;
+    return this.http.delete<string>(url);
+  }
+  addRow(collectionName: string): Observable<string> {
+    const url = `${this.baseUrl}/api/add-row?collectionName=${collectionName}`;
+    return this.http.post<string>(url, {});
+  }
   
 removeHeaderFromCSV(collectionName: string, headerToRemove: string): Observable<any> {
   const url = `${this.baseUrl}/api/remove-header/${collectionName}?headerToRemove=${headerToRemove}`;

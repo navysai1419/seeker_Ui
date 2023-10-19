@@ -15,17 +15,19 @@
             <th *ngFor="let columnName of csvData[0] | keyvalue">{{ columnName.key }}</th>
           </tr>
         </thead>
-        <tbody>
+        <!-- <tbody>
           <tr *ngFor="let row of csvData; let i = index" class="table-row" (mouseenter)="showButtons(i)" (mouseleave)="hideButtons(i)">
-            <td *ngFor="let cell of row | keyvalue">{{ cell.value }}
+      
+            <td *ngFor="let cell of row | keyvalue  ">
+              {{cell.value}}
             <div class="icon-container">
-              <span class="bi bi-plus-square" *ngIf="showAdd[i]" (click)="addRow(i)" data-toggle="tooltip" data-placement="top" title="Add"></span>
+              <span class="bi bi-plus-square" *ngIf="showAdd[i]" (click)="addRow()" data-toggle="tooltip" data-placement="top" title="Add"></span>
               <span class="bi bi-pencil-square" *ngIf="showEdit[i]" (click)="editRow(row)" data-toggle="tooltip" data-placement="top" title="Edit"></span>
-              <span class="bi bi-dash-square" *ngIf="showDelete[i]" (click)="deleteRow(i)" data-toggle="tooltip" data-placement="top" title="Delete"></span>
+              <span class="bi bi-dash-square" *ngIf="showDelete[i]" (click)="deleteRow(row)" data-toggle="tooltip" data-placement="top" title="Delete"></span>
             </div>
         </td>
           </tr>
-        </tbody>
+        </tbody> -->
       </table>
     </div>
     </div>
